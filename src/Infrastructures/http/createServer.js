@@ -5,6 +5,7 @@ const DomainErrorTranslator = require("../../Commons/exceptions/DomainErrorTrans
 const users = require("../../Interfaces/http/api/users");
 const authentications = require("../../Interfaces/http/api/authentications");
 const threads = require("../../Interfaces/http/api/threads");
+const comments = require("../../Interfaces/http/api/comments");
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -26,8 +27,8 @@ const createServer = async (container) => {
       sub: false,
       maxAgeSec: process.env.ACCESS_TOKEN_AGE,
     },
-    validate: async (artifacts, request, h) => {
-      return { isValid: true, credential: { id: artifacts.decoded.payload.id, username: artifacts.decoded.payload.username } };
+    validate: async () => {
+      return { isValid: true };
     },
   });
 
@@ -42,6 +43,10 @@ const createServer = async (container) => {
     },
     {
       plugin: threads,
+      options: { container },
+    },
+    {
+      plugin: comments,
       options: { container },
     },
   ]);
