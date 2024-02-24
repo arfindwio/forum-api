@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 exports.up = (pgm) => {
-  // Membuat tabel threads
   pgm.createTable("threads", {
     id: {
       type: "VARCHAR(50)",

@@ -11,7 +11,7 @@ class ThreadDetail {
     this.date = date;
   }
 
-  _verifyPayload({ id, title, username, body, date }) {
+  _verifyPayload({ id, username, title, body, date }) {
     if (!id || !username || !title || !body || !date) {
       throw new Error("THREAD_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY");
     }

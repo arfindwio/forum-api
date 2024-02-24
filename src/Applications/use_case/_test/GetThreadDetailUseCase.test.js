@@ -1,89 +1,81 @@
-const DetailThread = require("../../../Domains/threads/entities/DetailThread");
+const ThreadDetail = require("../../../Domains/threads/entities/ThreadDetail");
 const ThreadRepository = require("../../../Domains/threads/ThreadRepository");
-const GetDetailThreadUseCase = require("../GetDetailThreadUseCase");
+const GetThreadDetailUseCase = require("../GetThreadDetailUseCase");
 const CommentRepository = require("../../../Domains/comments/CommentRepository");
-const DetailComment = require("../../../Domains/comments/entities/DetailComment");
+const CommentDetail = require("../../../Domains/comments/entities/CommentDetail");
 
-describe("GetDetailThreadUseCase", () => {
-  it("harus orchestrating fitur get detail thread dengan benar", async () => {
-    // Arrange
-    const threadId = "thread-123";
-
+describe("GetThreadDetailUseCase", () => {
+  it("Must orchestrate the feature of getting thread details correctly", async () => {
     const payload = {
-      username: "alvin",
-      title: "Ini contoh title",
-      body: "Ini contoh body",
-      content: "Ini contoh comment",
+      username: "username",
+      title: "ini title",
+      body: "ini body",
+      content: "ini content",
       date: new Date().toISOString(),
     };
 
-    const mockDetailThread = new DetailThread({
-      id: threadId,
+    const mockThreadDetail = new ThreadDetail({
+      id: "thread-123",
       title: payload.title,
       username: payload.username,
       body: payload.body,
       date: payload.date,
     });
 
-    const mockFirstComment = {
+    const mockComment1 = {
       id: "comment-123",
       username: payload.username,
-      date: payload.date,
-      content: payload.content,
-      is_delete: false,
-    };
-
-    const mockSecondComment = {
-      id: "comment-321",
-      username: "yusuf",
       date: payload.date,
       content: payload.content,
       is_delete: true,
     };
 
-    const comments = [mockFirstComment, mockSecondComment];
+    const mockComment2 = {
+      id: "comment-123",
+      username: "username2",
+      date: payload.date,
+      content: payload.content,
+      is_deleted: true,
+    };
+
+    const comments = [mockComment1, mockComment2];
 
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
 
-    mockThreadRepository.getThreadById = jest.fn(() => Promise.resolve(mockDetailThread));
-    mockCommentRepository.getCommentsByThreadId = jest.fn(() => Promise.resolve(comments));
+    mockThreadRepository.getThreadById = jest.fn(() => Promise.resolve(mockThreadDetail));
+    mockCommentRepository.getAllCommentsByThreadId = jest.fn(() => Promise.resolve(comments));
 
-    const getDetailThreadUseCase = new GetDetailThreadUseCase({
+    const getThreadDetailUseCase = new GetThreadDetailUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
     });
 
-    // Action
-    const detailThread = await getDetailThreadUseCase.execute(threadId);
+    const threadDetail = await getThreadDetailUseCase.execute("thread-123");
 
-    // Assert
-    expect(detailThread).toEqual({
-      id: threadId,
+    expect(threadDetail).toEqual({
+      id: "thread-123",
       title: payload.title,
       username: payload.username,
       body: payload.body,
       date: payload.date,
-      comments: [new DetailComment(mockFirstComment), new DetailComment({ ...mockSecondComment, content: "**komentar telah dihapus**" })],
+      comments: [new CommentDetail(mockComment1), new CommentDetail({ ...mockComment2, content: "**komentar telah dihapus**" })],
     });
-    expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
-    expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
+    expect(mockThreadRepository.getThreadById).toBeCalledWith("thread-123");
+    expect(mockCommentRepository.getAllCommentsByThreadId).toBeCalledWith("thread-123");
   });
 
-  it("harus orchestrating fitur get detail thread tanpa comment dengan benar", async () => {
-    // Arrange
-    const threadId = "thread-123";
-
+  it("Should orchestrate the feature of retrieving thread details without comments correctly", async () => {
     const payload = {
-      username: "alvin",
-      title: "Ini contoh title",
-      body: "Ini contoh body",
-      content: "Ini contoh comment",
+      username: "username",
+      title: "ini title",
+      body: "ini body",
+      content: "ini content",
       date: new Date().toISOString(),
     };
 
-    const mockDetailThread = new DetailThread({
-      id: threadId,
+    const mockThreadDetail = new ThreadDetail({
+      id: "thread-123",
       title: payload.title,
       username: payload.username,
       body: payload.body,
@@ -93,20 +85,18 @@ describe("GetDetailThreadUseCase", () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
 
-    mockThreadRepository.getThreadById = jest.fn(() => Promise.resolve(mockDetailThread));
-    mockCommentRepository.getCommentsByThreadId = jest.fn(() => Promise.resolve([]));
+    mockThreadRepository.getThreadById = jest.fn(() => Promise.resolve(mockThreadDetail));
+    mockCommentRepository.getAllCommentsByThreadId = jest.fn(() => Promise.resolve([]));
 
-    const getDetailThreadUseCase = new GetDetailThreadUseCase({
+    const getThreadDetailUseCase = new GetThreadDetailUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
     });
 
-    // Action
-    const detailThread = await getDetailThreadUseCase.execute(threadId);
+    const threadDetail = await getThreadDetailUseCase.execute("thread-123");
 
-    // Assert
-    expect(detailThread).toEqual({
-      id: threadId,
+    expect(threadDetail).toEqual({
+      id: "thread-123",
       title: payload.title,
       username: payload.username,
       body: payload.body,

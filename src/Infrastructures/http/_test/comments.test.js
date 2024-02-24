@@ -225,4 +225,62 @@ describe("/threads/{threadId}/comments endpoint", () => {
       expect(responseJson.message).toEqual("Missing authentication");
     });
   });
+
+  describe("when DELETE /threads/{threadId}/comments/{commentId}", () => {
+    it("should return response code 200", async () => {
+      const server = await createServer(container);
+
+      const responseAuth = await server.inject({
+        method: "POST",
+        url: "/authentications",
+        payload: {
+          username: "username",
+          password: "secret",
+        },
+      });
+
+      const responseAuthJson = JSON.parse(responseAuth.payload);
+
+      const responseThread = await server.inject({
+        method: "POST",
+        url: "/threads",
+        payload: {
+          title: "ini title",
+          body: "ini body",
+        },
+        headers: {
+          authorization: `Bearer ${responseAuthJson.data.accessToken}`,
+        },
+      });
+
+      const responseThreadJson = JSON.parse(responseThread.payload);
+
+      const requestPayload = {
+        content: "ini content",
+      };
+
+      const responseComment = await server.inject({
+        method: "POST",
+        url: `/threads/${responseThreadJson.data.addedThread.id}/comments`,
+        payload: requestPayload,
+        headers: {
+          authorization: `Bearer ${responseAuthJson.data.accessToken}`,
+        },
+      });
+
+      const responseCommentJson = JSON.parse(responseComment.payload);
+
+      const response = await server.inject({
+        method: "DELETE",
+        url: `/threads/${responseThreadJson.data.addedThread.id}/comments/${responseCommentJson.data.addedComment.id}`,
+        headers: {
+          authorization: `Bearer ${responseAuthJson.data.accessToken}`,
+        },
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual("success");
+    });
+  });
 });
