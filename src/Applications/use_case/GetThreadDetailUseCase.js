@@ -7,7 +7,6 @@ class GetThreadDetailUseCase {
   }
 
   async execute(thread_id) {
-    console.log("hehe", thread_id);
     const threadDetail = await this._threadRepository.getThreadById(thread_id);
 
     const comments = await this._commentRepository.getAllCommentsByThreadId(thread_id);
@@ -24,7 +23,6 @@ class GetThreadDetailUseCase {
       );
     });
 
-    // sorting data dari date yang paling lama
     commentDetail.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     threadDetail.comments = commentDetail;

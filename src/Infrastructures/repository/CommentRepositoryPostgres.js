@@ -1,4 +1,5 @@
-const InvariantError = require("../../Commons/exceptions/InvariantError");
+const AuthorizationError = require("../../Commons/exceptions/AuthorizationError");
+const NotFoundError = require("../../Commons/exceptions/NotFoundError");
 const CreatedComment = require("../../Domains/comments/entities/CreatedComment");
 const CommentRepository = require("../../Domains/comments/CommentRepository");
 
@@ -24,13 +25,54 @@ class CommentRepositoryPostgres extends CommentRepository {
     return new CreatedComment({ ...result.rows[0] });
   }
 
-  async getCommentsByThreadId(threadId) {
+  async getCommentDetail(id, thread_id) {
+    const query = {
+      text: "SELECT * FROM comments WHERE thread_id = $1 AND id = $2",
+      values: [thread_id, id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError("comment tidak ditemukan ");
+    }
+  }
+
+  async getCommentOwner(id, owner) {
+    const query = {
+      text: "SELECT * FROM comments WHERE id = $1 AND owner = $2",
+      values: [id, owner],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (result.rows.length === 0) {
+      throw new AuthorizationError("Anda bukan pemilik komentar ini");
+    }
+
+    return result.rows[0];
+  }
+
+  async deleteComment({ id, owner, thread_id }) {
+    const query = {
+      text: "UPDATE comments SET is_deleted = true WHERE id = $1 AND owner = $2 AND thread_id = $3",
+      values: [id, owner, thread_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError("id tidak ditemukan");
+    }
+  }
+
+  async getAllCommentsByThreadId(thread_id) {
     const query = {
       text: `SELECT comments.id, users.username, comments.date,
         comments.content, comments.is_deleted FROM comments
         INNER JOIN users ON comments.owner = users.id
         WHERE thread_id = $1`,
-      values: [threadId],
+      values: [thread_id],
     };
 
     const result = await this._pool.query(query);
