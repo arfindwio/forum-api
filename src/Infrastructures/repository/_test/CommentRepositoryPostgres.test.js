@@ -54,7 +54,7 @@ describe("CommentRepositoryPostgres", () => {
       await commentRepositoryPostgres.addComment(createComment);
 
       // Assert
-      const comments = await CommentsTableTestHelper.findCommentById("comment-123");
+      const comments = await CommentsTableTestHelper.getCommentById("comment-123");
       expect(comments).toHaveLength(1);
     });
   });
@@ -132,7 +132,7 @@ describe("CommentRepositoryPostgres", () => {
       await commentRepositoryPostgres.deleteComment(payload);
 
       // Assert
-      const comments = await CommentsTableTestHelper.findCommentById(payload.id);
+      const comments = await CommentsTableTestHelper.getCommentById(payload.id);
       expect(comments).toHaveLength(1);
     });
   });
