@@ -11,10 +11,10 @@ class RepliesHandler {
 
   async postReplyHandler(request, h) {
     const owner = request.auth.credentials.id;
-    const comment_id = request.params.commentId;
+    const { threadId: thread_id, commentId: comment_id } = request.params;
 
     const addReplyUseCase = this._container.getInstance(AddReplyUseCase.name);
-    const addedReply = await addReplyUseCase.execute({ owner, comment_id, ...request.payload });
+    const addedReply = await addReplyUseCase.execute({ owner, thread_id, comment_id, ...request.payload });
 
     const response = h.response({
       status: "success",

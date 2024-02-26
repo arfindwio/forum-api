@@ -47,7 +47,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const result = await this._pool.query(query);
 
     if (result.rows.length === 0) {
-      throw new AuthorizationError("Anda bukan pemilik komentar ini");
+      throw new AuthorizationError("Anda bukan pemilik balasan ini");
     }
 
     return result.rows[0];

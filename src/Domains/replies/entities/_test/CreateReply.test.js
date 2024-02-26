@@ -15,6 +15,7 @@ describe("a CreateReply entities", () => {
     // Arrange
     const payload = {
       owner: 123,
+      thread_id: [],
       comment_id: {},
       content: true,
     };
@@ -27,6 +28,7 @@ describe("a CreateReply entities", () => {
     // Arrange
     const payload = {
       owner: "user-123",
+      thread_id: "thread-123",
       comment_id: "comment-123",
       content: "ini content",
     };
@@ -36,6 +38,7 @@ describe("a CreateReply entities", () => {
 
     // Assert
     expect(createReply.owner).toEqual(payload.owner);
+    expect(createReply.thread_id).toEqual(payload.thread_id);
     expect(createReply.comment_id).toEqual(payload.comment_id);
     expect(createReply.content).toEqual(payload.content);
   });
