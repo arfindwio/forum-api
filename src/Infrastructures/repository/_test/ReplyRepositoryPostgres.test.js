@@ -49,6 +49,7 @@ describe("ReplyRepositoryPostgres", () => {
 
       const createReply = new CreateReply({
         owner: "user-123",
+        thread_id: "thread-123",
         comment_id: "comment-123",
         content: "ini content",
       });

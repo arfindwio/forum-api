@@ -224,7 +224,7 @@ describe("/threads endpoint", () => {
       // Action
       const response = await server.inject({
         method: "GET",
-        url: "/threads/123",
+        url: "/threads/999",
       });
 
       // Assert
