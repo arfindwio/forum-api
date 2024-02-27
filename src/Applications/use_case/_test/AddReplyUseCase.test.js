@@ -30,8 +30,8 @@ describe("AddReplyUseCase", () => {
     const mockReplyRepository = new ReplyRepository();
 
     /** mocking needed function */
-    mockThreadRepository.getThreadById = jest.fn().mockImplementation(() => Promise.resolve());
-    mockCommentRepository.getCommentById = jest.fn().mockImplementation(() => Promise.resolve());
+    mockThreadRepository.verifyThreadAvailability = jest.fn().mockImplementation(() => Promise.resolve());
+    mockCommentRepository.verifyCommentAvailability = jest.fn().mockImplementation(() => Promise.resolve());
     mockReplyRepository.addReply = jest.fn().mockImplementation(() => Promise.resolve(mockCreatedReply));
 
     /** creating use case instance */
@@ -53,8 +53,8 @@ describe("AddReplyUseCase", () => {
       })
     );
 
-    expect(mockThreadRepository.getThreadById).toBeCalledWith("thread-123");
-    expect(mockCommentRepository.getCommentById).toBeCalledWith("comment-123");
+    expect(mockThreadRepository.verifyThreadAvailability).toBeCalledWith("thread-123");
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith("comment-123");
 
     expect(mockReplyRepository.addReply).toBeCalledWith(
       new CreateReply({

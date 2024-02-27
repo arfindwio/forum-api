@@ -2,6 +2,7 @@ const ThreadsTableTestHelper = require("../../../../tests/ThreadsTableTestHelper
 const UsersTableTestHelper = require("../../../../tests/UsersTableTestHelper");
 const NotFoundError = require("../../../Commons/exceptions/NotFoundError");
 const CreateThread = require("../../../Domains/threads/entities/CreateThread");
+const CreatedThread = require("../../../Domains/threads/entities/CreatedThread");
 const RegisterUser = require("../../../Domains/users/entities/RegisterUser");
 const pool = require("../../database/postgres/pool");
 const ThreadRepositoryPostgres = require("../ThreadRepositoryPostgres");
@@ -15,6 +16,28 @@ describe("ThreadRepositoryPostgres", () => {
 
   afterAll(async () => {
     await pool.end();
+  });
+
+  describe("verifyThreadAvailability function", () => {
+    it("should throw NotFoundError when thread not available", async () => {
+      // Arrange
+      const fakeIdGenerator = () => "123";
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action & Assert
+      await expect(threadRepositoryPostgres.verifyThreadAvailability("thread-123")).rejects.toThrowError(NotFoundError);
+    });
+
+    it("should not throw NotFoundError when thread available", async () => {
+      // Arrange
+      const fakeIdGenerator = () => "123";
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({ id: "thread-123" });
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action & Assert
+      await expect(threadRepositoryPostgres.verifyThreadAvailability("thread-123")).resolves.not.toThrowError(NotFoundError);
+    });
   });
 
   describe("addThread function", () => {
@@ -41,8 +64,41 @@ describe("ThreadRepositoryPostgres", () => {
       await threadRepositoryPostgres.addThread(createThread);
 
       // Assert
-      const threads = await ThreadsTableTestHelper.getThreadById("thread-123");
+      const threads = await ThreadsTableTestHelper.findThreadById("thread-123");
       expect(threads).toHaveLength(1);
+    });
+
+    it("should return registered user correctly", async () => {
+      // Arrange
+      const registerUser = new RegisterUser({
+        username: "username",
+        password: "secret",
+        fullname: "ini fullname",
+      });
+
+      const createThread = new CreateThread({
+        owner: "user-123",
+        title: "ini title",
+        body: "ini body",
+      });
+
+      const fakeIdGenerator = () => "123"; // stub!
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator);
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action
+      await userRepositoryPostgres.addUser(registerUser);
+      const createdThread = await threadRepositoryPostgres.addThread(createThread);
+
+      // Assert
+      expect(createdThread).toStrictEqual(
+        new CreatedThread({
+          id: "thread-123",
+          owner: "user-123",
+          title: "ini title",
+          body: "ini body",
+        })
+      );
     });
   });
 

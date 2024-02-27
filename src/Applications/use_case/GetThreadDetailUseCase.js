@@ -16,22 +16,19 @@ class GetThreadDetailUseCase {
       comments.map(async (comment) => {
         const replies = await this._replyRepository.getAllRepliesByCommentId(comment.id);
 
-        const formattedReplies = replies.map(
-          (reply) =>
-            new ReplyDetail({
-              id: reply.id,
-              username: reply.username,
-              content: reply.is_deleted ? "**balasan telah dihapus**" : reply.content,
-              date: reply.date,
-            })
-        );
+        const formattedReplies = replies.map((reply) => ({
+          id: reply.id,
+          username: reply.username,
+          content: reply.is_deleted ? "**balasan telah dihapus**" : reply.content,
+          date: reply.date,
+        }));
 
-        const formattedComment = new CommentDetail({
+        const formattedComment = {
           id: comment.id,
           username: comment.username,
           content: comment.is_deleted ? "**komentar telah dihapus**" : comment.content,
           date: comment.date,
-        });
+        };
 
         formattedComment.replies = formattedReplies;
 
