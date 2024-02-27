@@ -19,6 +19,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       text: "INSERT INTO replies(id, owner, comment_id, content, date) VALUES($1, $2, $3, $4, $5) RETURNING id, owner, content",
       values: [id, owner, comment_id, content, date],
     };
+    ``;
 
     const result = await this._pool.query(query);
 
@@ -40,7 +41,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
   async getReplyOwner(id, owner) {
     const query = {
-      text: "SELECT * FROM replies WHERE id = $1 AND owner = $2",
+      text: "SELECT owner FROM replies WHERE id = $1 AND owner = $2",
       values: [id, owner],
     };
 
@@ -49,8 +50,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     if (result.rows.length === 0) {
       throw new AuthorizationError("Anda bukan pemilik balasan ini");
     }
-
-    return result.rows[0];
   }
 
   async deleteReply({ id, owner, comment_id }) {

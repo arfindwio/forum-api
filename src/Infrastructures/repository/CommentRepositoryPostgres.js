@@ -39,7 +39,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     }
   }
 
-  async getCommentOwner(id, owner) {
+  async verifyCommentOwner(id, owner) {
     const query = {
       text: "SELECT * FROM comments WHERE id = $1 AND owner = $2",
       values: [id, owner],
@@ -50,8 +50,6 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (result.rows.length === 0) {
       throw new AuthorizationError("Anda bukan pemilik komentar ini");
     }
-
-    return result.rows[0];
   }
 
   async deleteComment({ id, owner, thread_id }) {
@@ -80,9 +78,9 @@ class CommentRepositoryPostgres extends CommentRepository {
     return result.rows;
   }
 
-  async getCommentById(comment_id) {
+  async verifyCommentAvailability(comment_id) {
     const query = {
-      text: "SELECT comments.id, users.username, comments.content, comments.date FROM comments JOIN users ON comments.owner = users.id WHERE comments.id = $1",
+      text: "SELECT id FROM comments WHERE id = $1",
       values: [comment_id],
     };
 
@@ -91,8 +89,6 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!result.rowCount) {
       throw new NotFoundError("comment tidak ditemukan");
     }
-
-    return new CommentDetail({ ...result.rows[0] });
   }
 }
 
