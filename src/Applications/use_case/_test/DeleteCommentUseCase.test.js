@@ -12,7 +12,7 @@ describe("DeleteCommentUseCase", () => {
 
     const mockCommentRepository = new CommentRepository();
 
-    mockCommentRepository.getCommentDetail = jest.fn().mockImplementation(() => Promise.resolve());
+    mockCommentRepository.checkAvailabilityComment = jest.fn().mockImplementation(() => Promise.resolve());
     mockCommentRepository.verifyCommentOwner = jest.fn().mockImplementation(() => Promise.resolve());
     mockCommentRepository.deleteComment = jest.fn().mockImplementation(() => Promise.resolve());
 
@@ -24,7 +24,7 @@ describe("DeleteCommentUseCase", () => {
     await deleteCommentUseCase.execute(payload);
 
     // Assert
-    expect(mockCommentRepository.getCommentDetail).toBeCalledWith(payload.id, payload.thread_id);
+    expect(mockCommentRepository.checkAvailabilityComment).toBeCalledWith(payload.id, payload.thread_id);
     expect(mockCommentRepository.verifyCommentOwner).toBeCalledWith(payload.id, payload.owner);
     expect(mockCommentRepository.deleteComment).toBeCalledWith(payload);
   });

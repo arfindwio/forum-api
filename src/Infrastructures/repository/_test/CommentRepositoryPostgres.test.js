@@ -1,16 +1,16 @@
-const CommentsTableTestHelper = require("../../../../tests/CommentsTableTestHelper");
-const ThreadsTableTestHelper = require("../../../../tests/ThreadsTableTestHelper");
+const pool = require("../../database/postgres/pool");
 const UsersTableTestHelper = require("../../../../tests/UsersTableTestHelper");
-const NotFoundError = require("../../../Commons/exceptions/NotFoundError");
-const AuthorizationError = require("../../../Commons/exceptions/AuthorizationError");
+const ThreadsTableTestHelper = require("../../../../tests/ThreadsTableTestHelper");
+const CommentsTableTestHelper = require("../../../../tests/CommentsTableTestHelper");
 const CreateComment = require("../../../Domains/comments/entities/CreateComment");
 const CreateThread = require("../../../Domains/threads/entities/CreateThread");
 const RegisterUser = require("../../../Domains/users/entities/RegisterUser");
-const pool = require("../../database/postgres/pool");
 const CommentRepositoryPostgres = require("../CommentRepositoryPostgres");
 const ThreadRepositoryPostgres = require("../ThreadRepositoryPostgres");
 const UserRepositoryPostgres = require("../UserRepositoryPostgres");
 const CreatedComment = require("../../../Domains/comments/entities/CreatedComment");
+const NotFoundError = require("../../../Commons/exceptions/NotFoundError");
+const AuthorizationError = require("../../../Commons/exceptions/AuthorizationError");
 
 describe("CommentRepositoryPostgres", () => {
   afterEach(async () => {
@@ -100,14 +100,14 @@ describe("CommentRepositoryPostgres", () => {
     });
   });
 
-  describe("getCommentDetail function", () => {
+  describe("checkAvailabilityComment function", () => {
     it("It should raise a 'notFound' error when the item is not found", async () => {
       // Arrange
       const fakeIdGenerator = () => "123";
       const commentRepository = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action dan Assert
-      await expect(commentRepository.getCommentDetail("comment-123", "thread-123")).rejects.toThrow(NotFoundError);
+      await expect(commentRepository.checkAvailabilityComment("comment-123", "thread-123")).rejects.toThrow(NotFoundError);
     });
 
     it("Do not raise an error when a comment is found", async () => {
@@ -120,7 +120,7 @@ describe("CommentRepositoryPostgres", () => {
       await CommentsTableTestHelper.addComment({ id: "comment-123" });
 
       // Action & Assert
-      await expect(commentRepository.getCommentDetail("comment-123", "thread-123")).resolves.not.toThrow(NotFoundError);
+      await expect(commentRepository.checkAvailabilityComment("comment-123", "thread-123")).resolves.not.toThrow(NotFoundError);
     });
   });
 

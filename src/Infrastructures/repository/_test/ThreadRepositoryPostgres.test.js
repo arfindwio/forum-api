@@ -115,33 +115,20 @@ describe("ThreadRepositoryPostgres", () => {
     it("Should be able to retrieve a thread based on its ID if the ID is found in the database", async () => {
       // Arrange
 
-      const registerUser = new RegisterUser({
-        username: "username",
-        password: "secret",
-        fullname: "ini fullname",
-      });
-
-      const createThread = new CreateThread({
-        owner: "user-123",
-        title: "ini title",
-        body: "ini body",
-      });
-
       const fakeIdGenerator = () => "123";
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator);
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
-      await userRepositoryPostgres.addUser(registerUser);
-      await threadRepositoryPostgres.addThread(createThread);
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({ date: "27 Februari 2024" });
 
       // Assert
       const result = await threadRepositoryPostgres.getThreadById("thread-123");
       expect(result.id).toEqual("thread-123");
-      expect(result.username).toEqual(registerUser.username);
-      expect(result.title).toEqual(createThread.title);
-      expect(result.body).toEqual(createThread.body);
-      expect(result.date).toBeDefined();
+      expect(result.username).toEqual("dicoding");
+      expect(result.title).toEqual("ini title");
+      expect(result.body).toEqual("ini body");
+      expect(result.date).toEqual("27 Februari 2024");
     });
   });
 });

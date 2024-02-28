@@ -11,7 +11,7 @@ const RepliesTableTestHelper = {
     await pool.query(query);
   },
 
-  async getReplyById(id) {
+  async findReplyById(id) {
     const query = {
       text: "SELECT * FROM replies WHERE id = $1",
       values: [id],
