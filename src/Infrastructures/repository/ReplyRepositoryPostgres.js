@@ -23,10 +23,10 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     const result = await this._pool.query(query);
 
-    return new CreatedReply({ ...result.rows[0] });
+    return new CreatedReply(result.rows[0]);
   }
 
-  async getReplyDetail(id, comment_id) {
+  async checkAvailabilityReply(id, comment_id) {
     const query = {
       text: "SELECT * FROM replies WHERE comment_id = $1 AND id = $2",
       values: [comment_id, id],
@@ -39,7 +39,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     }
   }
 
-  async getReplyOwner(id, owner) {
+  async verifyReplyOwner(id, owner) {
     const query = {
       text: "SELECT owner FROM replies WHERE id = $1 AND owner = $2",
       values: [id, owner],
@@ -65,13 +65,15 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     }
   }
 
-  async getAllRepliesByCommentId(comment_id) {
+  async getAllRepliesByThreadId(thread_id) {
     const query = {
       text: `SELECT replies.id, users.username, replies.date,
-        replies.content, replies.is_deleted FROM replies
-        INNER JOIN users ON replies.owner = users.id
-        WHERE comment_id = $1`,
-      values: [comment_id],
+            replies.content, replies.is_deleted, comment_id 
+            FROM replies
+            INNER JOIN users ON replies.owner = users.id
+            INNER JOIN comments ON replies.comment_id = comments.id
+            WHERE comments.thread_id = $1`,
+      values: [thread_id],
     };
 
     const result = await this._pool.query(query);

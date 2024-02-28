@@ -3,11 +3,11 @@ class ReplyRepository {
     throw new Error("REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
-  async getReplyDetail(id, commentId) {
+  async checkAvailabilityReply(id, commentId) {
     throw new Error("REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
-  async getReplyOwner(id, owner) {
+  async verifyReplyOwner(id, owner) {
     throw new Error("REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
@@ -15,7 +15,7 @@ class ReplyRepository {
     throw new Error("REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
-  async getAllRepliesByCommentId(commentId) {
+  async getAllRepliesByThreadId(threadId) {
     throw new Error("REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 }

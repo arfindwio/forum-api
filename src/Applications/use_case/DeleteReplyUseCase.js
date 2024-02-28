@@ -7,8 +7,8 @@ class DeleteReplyUseCase {
 
   async execute(payload) {
     const deleteReply = new DeleteReply(payload);
-    await this._replyRepository.getReplyDetail(payload.id, payload.comment_id);
-    await this._replyRepository.getReplyOwner(payload.id, payload.owner);
+    await this._replyRepository.checkAvailabilityReply(payload.id, payload.comment_id);
+    await this._replyRepository.verifyReplyOwner(payload.id, payload.owner);
     return this._replyRepository.deleteReply(deleteReply);
   }
 }
