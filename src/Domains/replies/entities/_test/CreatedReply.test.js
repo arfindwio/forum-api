@@ -1,35 +1,35 @@
-const CreatedReply = require("../CreatedReply");
+const CreatedReply = require('../CreatedReply');
 
-describe("a CreatedReply entities", () => {
-  it("should throw error when payload did not contain needed property", () => {
+describe('a CreatedReply entities', () => {
+  it('should throw error when payload did not contain needed property', () => {
     // Arrange
     const payload = {
-      owner: "user-123",
-      content: "ini content",
+      owner: 'user-123',
+      content: 'ini content',
     };
 
     // Action and Assert
-    expect(() => new CreatedReply(payload)).toThrowError("CREATED_REPLY.NOT_CONTAIN_NEEDED_PROPERTY");
+    expect(() => new CreatedReply(payload)).toThrowError('CREATED_REPLY.NOT_CONTAIN_NEEDED_PROPERTY');
   });
 
-  it("should throw error when payload did not meet data type specification", () => {
+  it('should throw error when payload did not meet data type specification', () => {
     // Arrange
     const payload = {
       id: 123,
-      owner: "user-123",
+      owner: 'user-123',
       content: [],
     };
 
     // Action and Assert
-    expect(() => new CreatedReply(payload)).toThrowError("CREATED_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION");
+    expect(() => new CreatedReply(payload)).toThrowError('CREATED_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
-  it("should create createdReply object correctly", () => {
+  it('should create createdReply object correctly', () => {
     // Arrange
     const payload = {
-      id: "reply-123",
-      owner: "user-123",
-      content: "ini content",
+      id: 'reply-123',
+      owner: 'user-123',
+      content: 'ini content',
     };
 
     // Action

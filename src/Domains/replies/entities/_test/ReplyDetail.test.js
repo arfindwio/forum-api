@@ -1,17 +1,17 @@
-const ReplyDetail = require("../ReplyDetail");
+const ReplyDetail = require('../ReplyDetail');
 
-describe("a ReplyDetail entities", () => {
-  it("Should throw an error when there is an empty property", () => {
+describe('a ReplyDetail entities', () => {
+  it('Should throw an error when there is an empty property', () => {
     // Arrange
     const payload = {
-      id: "reply-123",
+      id: 'reply-123',
     };
 
     // Action dan Assert
-    expect(() => new ReplyDetail(payload)).toThrowError("DETAIL_REPLY.NOT_CONTAIN_NEEDED_PROPERTY");
+    expect(() => new ReplyDetail(payload)).toThrowError('DETAIL_REPLY.NOT_CONTAIN_NEEDED_PROPERTY');
   });
 
-  it("It should raise an error when there is a mismatched data type", () => {
+  it('It should raise an error when there is a mismatched data type', () => {
     // Arrange
     const payload = {
       id: [],
@@ -21,16 +21,16 @@ describe("a ReplyDetail entities", () => {
     };
 
     // Action dan Assert
-    expect(() => new ReplyDetail(payload)).toThrowError("DETAIL_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION");
+    expect(() => new ReplyDetail(payload)).toThrowError('DETAIL_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
-  it("Should successfully display reply details accurately", () => {
+  it('Should successfully display reply details accurately', () => {
     // Arrange
     const payload = {
-      id: "reply-123",
-      username: "user-123",
-      content: "ini content",
-      date: "2024-02-24T05:09:27.935Z",
+      id: 'reply-123',
+      username: 'user-123',
+      content: 'ini content',
+      date: '2024-02-24T05:09:27.935Z',
     };
 
     // Action

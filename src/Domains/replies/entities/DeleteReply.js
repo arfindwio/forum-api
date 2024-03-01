@@ -11,11 +11,11 @@ class DeleteReply {
 
   verifyPayload({ id, owner, comment_id }) {
     if (!id || !owner || !comment_id) {
-      throw new Error("DELETE_REPLY.NOT_CONTAIN_NEEDED_PROPERTY");
+      throw new Error('DELETE_REPLY.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    if (typeof id !== "string" || typeof owner !== "string" || typeof comment_id !== "string") {
-      throw new Error("DELETE_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION");
+    if (typeof id !== 'string' || typeof owner !== 'string' || typeof comment_id !== 'string') {
+      throw new Error('DELETE_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }
 }
