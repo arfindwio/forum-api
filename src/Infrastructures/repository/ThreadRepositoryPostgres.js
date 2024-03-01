@@ -1,6 +1,6 @@
-const NotFoundError = require("../../Commons/exceptions/NotFoundError");
-const CreatedThread = require("../../Domains/threads/entities/CreatedThread");
-const ThreadRepository = require("../../Domains/threads/ThreadRepository");
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
+const CreatedThread = require('../../Domains/threads/entities/CreatedThread');
+const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 
 class ThreadRepositoryPostgres extends ThreadRepository {
   constructor(pool, idGenerator) {
@@ -15,7 +15,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     const date = new Date().toISOString();
 
     const query = {
-      text: "INSERT INTO threads VALUES($1, $2, $3, $4, $5) RETURNING id, owner, title, body",
+      text: 'INSERT INTO threads VALUES($1, $2, $3, $4, $5) RETURNING id, owner, title, body',
       values: [id, owner, title, body, date],
     };
 
@@ -26,14 +26,14 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
   async getThreadById(thread_id) {
     const query = {
-      text: "SELECT threads.id, users.username, threads.title, threads.body, threads.date FROM threads JOIN users ON threads.owner = users.id WHERE threads.id = $1",
+      text: 'SELECT threads.id, users.username, threads.title, threads.body, threads.date FROM threads JOIN users ON threads.owner = users.id WHERE threads.id = $1',
       values: [thread_id],
     };
 
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError("thread tidak ditemukan");
+      throw new NotFoundError('thread tidak ditemukan');
     }
 
     return result.rows[0];
@@ -41,14 +41,14 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
   async verifyThreadAvailability(thread_id) {
     const query = {
-      text: "SELECT id FROM threads WHERE id = $1",
+      text: 'SELECT id FROM threads WHERE id = $1',
       values: [thread_id],
     };
 
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError("thread tidak ditemukan");
+      throw new NotFoundError('thread tidak ditemukan');
     }
   }
 }

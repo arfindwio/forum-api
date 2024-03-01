@@ -15,12 +15,12 @@ class GetThreadDetailUseCase {
       return {
         id: comment.id,
         username: comment.username,
-        content: comment.is_deleted ? "**komentar telah dihapus**" : comment.content,
+        content: comment.is_deleted ? '**komentar telah dihapus**' : comment.content,
         date: comment.date,
         replies: commentReplies.map((reply) => ({
           id: reply.id,
           username: reply.username,
-          content: reply.is_deleted ? "**balasan telah dihapus**" : reply.content,
+          content: reply.is_deleted ? '**balasan telah dihapus**' : reply.content,
           date: reply.date,
         })),
       };

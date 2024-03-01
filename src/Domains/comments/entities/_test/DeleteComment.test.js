@@ -1,18 +1,18 @@
-const DeleteComment = require("../DeleteComment");
+const DeleteComment = require('../DeleteComment');
 
-describe("a DeleteComment entities", () => {
-  it("Should return an error when required data is missing", () => {
+describe('a DeleteComment entities', () => {
+  it('Should return an error when required data is missing', () => {
     // Arrange
     const payload = {
-      id: "comment-123",
-      thread_id: "thread-123",
+      id: 'comment-123',
+      thread_id: 'thread-123',
     };
 
     // Action dan Assert
-    expect(() => new DeleteComment(payload)).toThrowError("DELETE_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY");
+    expect(() => new DeleteComment(payload)).toThrowError('DELETE_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
   });
 
-  it("Should raise an error when the required data type is not met", () => {
+  it('Should raise an error when the required data type is not met', () => {
     // Arrange
     const payload = {
       id: true,
@@ -21,15 +21,15 @@ describe("a DeleteComment entities", () => {
     };
 
     // Action dan Assert
-    expect(() => new DeleteComment(payload)).toThrowError("DELETE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION");
+    expect(() => new DeleteComment(payload)).toThrowError('DELETE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
-  it("Should create a new comment accordingly", () => {
+  it('Should create a new comment accordingly', () => {
     // Arrange
     const payload = {
-      id: "comment-123",
-      owner: "user-123",
-      thread_id: "thread-123",
+      id: 'comment-123',
+      owner: 'user-123',
+      thread_id: 'thread-123',
     };
 
     // Action

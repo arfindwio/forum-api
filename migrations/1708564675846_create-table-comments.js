@@ -3,36 +3,36 @@
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.createTable("comments", {
+  pgm.createTable('comments', {
     id: {
-      type: "VARCHAR(50)",
+      type: 'VARCHAR(50)',
       primaryKey: true,
     },
     owner: {
-      type: "VARCHAR(50)",
-      references: "users",
+      type: 'VARCHAR(50)',
+      references: 'users',
       notNull: true,
     },
     thread_id: {
-      type: "VARCHAR(50)",
-      references: "threads",
+      type: 'VARCHAR(50)',
+      references: 'threads',
       notNull: true,
     },
     content: {
-      type: "TEXT",
+      type: 'TEXT',
       notNull: true,
     },
     is_deleted: {
-      type: "BOOLEAN",
+      type: 'BOOLEAN',
       default: false,
     },
     date: {
-      type: "VARCHAR(50)",
-      default: pgm.func("current_timestamp"),
+      type: 'VARCHAR(50)',
+      default: pgm.func('current_timestamp'),
     },
   });
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable("comments");
+  pgm.dropTable('comments');
 };

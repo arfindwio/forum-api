@@ -1,23 +1,23 @@
-const CreateComment = require("../../../Domains/comments/entities/CreateComment");
-const CreatedComment = require("../../../Domains/comments/entities/CreatedComment");
-const CommentRepository = require("../../../Domains/comments/CommentRepository");
-const ThreadRepository = require("../../../Domains/threads/ThreadRepository");
-const AddCommentUseCase = require("../AddCommentUseCase");
+const CreateComment = require('../../../Domains/comments/entities/CreateComment');
+const CreatedComment = require('../../../Domains/comments/entities/CreatedComment');
+const CommentRepository = require('../../../Domains/comments/CommentRepository');
+const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const AddCommentUseCase = require('../AddCommentUseCase');
 
-describe("AddCommentUseCase", () => {
+describe('AddCommentUseCase', () => {
   /**
    * Menguji apakah use case mampu mengoskestrasikan langkah demi langkah dengan benar.
    */
-  it("should orchestrating the add comment action correctly", async () => {
+  it('should orchestrating the add comment action correctly', async () => {
     // Arrange
     const useCasePayload = {
-      owner: "user-123",
-      thread_id: "thread-123",
-      content: "ini title",
+      owner: 'user-123',
+      thread_id: 'thread-123',
+      content: 'ini title',
     };
 
     const mockCreatedComment = new CreatedComment({
-      id: "comment-123",
+      id: 'comment-123',
       owner: useCasePayload.owner,
       content: useCasePayload.content,
     });
@@ -42,10 +42,10 @@ describe("AddCommentUseCase", () => {
     // Assert
     expect(createdComment).toStrictEqual(
       new CreatedComment({
-        id: "comment-123",
+        id: 'comment-123',
         owner: useCasePayload.owner,
         content: useCasePayload.content,
-      })
+      }),
     );
 
     expect(mockThreadRepository.verifyThreadAvailability).toBeCalledWith(useCasePayload.thread_id);
@@ -55,7 +55,7 @@ describe("AddCommentUseCase", () => {
         owner: useCasePayload.owner,
         thread_id: useCasePayload.thread_id,
         content: useCasePayload.content,
-      })
+      }),
     );
   });
 });

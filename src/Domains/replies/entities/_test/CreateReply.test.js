@@ -1,17 +1,17 @@
-const CreateReply = require("../CreateReply");
+const CreateReply = require('../CreateReply');
 
-describe("a CreateReply entities", () => {
-  it("should throw error when payload did not contain needed property", () => {
+describe('a CreateReply entities', () => {
+  it('should throw error when payload did not contain needed property', () => {
     // Arrange
     const payload = {
-      owner: "user-123",
+      owner: 'user-123',
     };
 
     // Action and Assert
-    expect(() => new CreateReply(payload)).toThrowError("CREATE_REPLY.NOT_CONTAIN_NEEDED_PROPERTY");
+    expect(() => new CreateReply(payload)).toThrowError('CREATE_REPLY.NOT_CONTAIN_NEEDED_PROPERTY');
   });
 
-  it("should throw error when payload did not meet data type specification", () => {
+  it('should throw error when payload did not meet data type specification', () => {
     // Arrange
     const payload = {
       owner: 123,
@@ -21,16 +21,16 @@ describe("a CreateReply entities", () => {
     };
 
     // Action and Assert
-    expect(() => new CreateReply(payload)).toThrowError("CREATE_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION");
+    expect(() => new CreateReply(payload)).toThrowError('CREATE_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
-  it("should create createReply object correctly", () => {
+  it('should create createReply object correctly', () => {
     // Arrange
     const payload = {
-      owner: "user-123",
-      thread_id: "thread-123",
-      comment_id: "comment-123",
-      content: "ini content",
+      owner: 'user-123',
+      thread_id: 'thread-123',
+      comment_id: 'comment-123',
+      content: 'ini content',
     };
 
     // Action

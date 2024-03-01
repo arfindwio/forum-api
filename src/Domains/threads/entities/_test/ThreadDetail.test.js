@@ -1,17 +1,17 @@
-const ThreadDetail = require("../ThreadDetail");
+const ThreadDetail = require('../ThreadDetail');
 
-describe("ThreadDetail entities", () => {
-  it("should throw error when payload does not contain needed property", () => {
+describe('ThreadDetail entities', () => {
+  it('should throw error when payload does not contain needed property', () => {
     // Arrange
     const payload = {
-      title: "ini title",
+      title: 'ini title',
     };
 
     // Action & Assert
-    expect(() => new ThreadDetail(payload)).toThrowError("THREAD_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY");
+    expect(() => new ThreadDetail(payload)).toThrowError('THREAD_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY');
   });
 
-  it("should throw error when payload not meet data type specification", () => {
+  it('should throw error when payload not meet data type specification', () => {
     // Arrange
     const payload = {
       id: 123,
@@ -22,17 +22,17 @@ describe("ThreadDetail entities", () => {
     };
 
     // Action & Assert
-    expect(() => new ThreadDetail(payload)).toThrowError("THREAD_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION");
+    expect(() => new ThreadDetail(payload)).toThrowError('THREAD_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
-  it("should create ThreadDetail entities correctly", () => {
+  it('should create ThreadDetail entities correctly', () => {
     // Arrange
     const payload = {
-      id: "thread-123",
-      username: "username",
-      title: "ini title",
-      body: "ini body",
-      date: "2021-08-08T07:19:09.775Z",
+      id: 'thread-123',
+      username: 'username',
+      title: 'ini title',
+      body: 'ini body',
+      date: '2021-08-08T07:19:09.775Z',
     };
 
     // Action

@@ -1,22 +1,22 @@
-const CreateThread = require("../../../Domains/threads/entities/CreateThread");
-const CreatedThread = require("../../../Domains/threads/entities/CreatedThread");
-const ThreadRepository = require("../../../Domains/threads/ThreadRepository");
-const AddThreadUseCase = require("../AddThreadUseCase");
+const CreateThread = require('../../../Domains/threads/entities/CreateThread');
+const CreatedThread = require('../../../Domains/threads/entities/CreatedThread');
+const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const AddThreadUseCase = require('../AddThreadUseCase');
 
-describe("AddThreadUseCase", () => {
+describe('AddThreadUseCase', () => {
   /**
    * Menguji apakah use case mampu mengoskestrasikan langkah demi langkah dengan benar.
    */
-  it("should orchestrating the add thread action correctly", async () => {
+  it('should orchestrating the add thread action correctly', async () => {
     // Arrange
     const useCasePayload = {
-      owner: "user-123",
-      title: "ini title",
-      body: "ini body",
+      owner: 'user-123',
+      title: 'ini title',
+      body: 'ini body',
     };
 
     const mockCreatedThread = new CreatedThread({
-      id: "thread-123",
+      id: 'thread-123',
       owner: useCasePayload.owner,
       title: useCasePayload.title,
       body: useCasePayload.body,
@@ -39,11 +39,11 @@ describe("AddThreadUseCase", () => {
     // Assert
     expect(createdThread).toStrictEqual(
       new CreatedThread({
-        id: "thread-123",
+        id: 'thread-123',
         owner: useCasePayload.owner,
         title: useCasePayload.title,
         body: useCasePayload.body,
-      })
+      }),
     );
 
     expect(mockThreadRepository.addThread).toBeCalledWith(
@@ -51,7 +51,7 @@ describe("AddThreadUseCase", () => {
         owner: useCasePayload.owner,
         title: useCasePayload.title,
         body: useCasePayload.body,
-      })
+      }),
     );
   });
 });

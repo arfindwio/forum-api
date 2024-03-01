@@ -1,13 +1,13 @@
-const DeleteCommentUseCase = require("../DeleteCommentUseCase");
-const CommentRepository = require("../../../Domains/comments/CommentRepository");
+const DeleteCommentUseCase = require('../DeleteCommentUseCase');
+const CommentRepository = require('../../../Domains/comments/CommentRepository');
 
-describe("DeleteCommentUseCase", () => {
-  it("should orchestrating the delete comment action correctly", async () => {
+describe('DeleteCommentUseCase', () => {
+  it('should orchestrating the delete comment action correctly', async () => {
     // Arrange
     const payload = {
-      id: "comment-123",
-      owner: "user-123",
-      thread_id: "thread-123",
+      id: 'comment-123',
+      owner: 'user-123',
+      thread_id: 'thread-123',
     };
 
     const mockCommentRepository = new CommentRepository();
