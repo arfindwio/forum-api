@@ -31,6 +31,14 @@ const createServer = async (container) => {
     validate: async () => ({ isValid: true }),
   });
 
+  server.route({
+    method: 'GET',
+    path: '/',
+    handler: () => ({
+      value: 'Hello world!',
+    }),
+  });
+
   await server.register([
     {
       plugin: users,
