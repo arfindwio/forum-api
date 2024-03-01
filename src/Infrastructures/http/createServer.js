@@ -1,5 +1,6 @@
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
+const { RateLimiterMemory } = require('rate-limiter-flexible');
 const ClientError = require('../../Commons/exceptions/ClientError');
 const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTranslator');
 const users = require('../../Interfaces/http/api/users');
@@ -7,6 +8,11 @@ const authentications = require('../../Interfaces/http/api/authentications');
 const threads = require('../../Interfaces/http/api/threads');
 const comments = require('../../Interfaces/http/api/comments');
 const replies = require('../../Interfaces/http/api/replies');
+
+const rateLimiter = new RateLimiterMemory({
+  points: 90, // 90 points
+  duration: 60, // Per 60 seconds
+});
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -61,6 +67,20 @@ const createServer = async (container) => {
       options: { container },
     },
   ]);
+
+  server.ext('onPreAuth', async (request, h) => {
+    try {
+      await rateLimiter.consume(request.info.remoteAddress);
+    } catch (rlRejected) {
+      if (rlRejected instanceof Error) {
+        throw rlRejected;
+      } else {
+        throw new Error('Too Many Requests');
+      }
+    }
+
+    return h.continue;
+  });
 
   server.ext('onPreResponse', (request, h) => {
     // mendapatkan konteks response dari request
